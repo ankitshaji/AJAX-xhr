@@ -1,10 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>AJAX</title>
-</head>
-<body>
-    
-</body>
+  </head>
+  <body>
+    <button onclick="showCountries()">Show Countries</button>
+    <div id="feed"></div>
+    <script>
+      function showCountries() {
+        let xhr = new XMLHttpRequest();
+        xhr.open(
+          "GET",
+          "http://api.countrylayer.com/v2/all?access_key=046a9a087d4d3dd45ad1eaf039c07d04",
+          true
+        );
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            console.log("success");
+            let countries = JSON.parse(this.response);
+            countries.forEach((country) => {
+              const countryCard = document.createElement("div");
+              const countryCardImage = document.createElement("img");
+              countryCardImage.src = country.flag;
+              countryCard.innerHTML = country.name;
+              countryCard.appendChild(countryCardImage);
+              document.querySelector("#feed").appendChild(countryCard);
+            });
+          }
+        };
+        xhr.send();
+      }
+    </script>
+  </body>
 </html>
